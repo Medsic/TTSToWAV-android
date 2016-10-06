@@ -6,24 +6,24 @@ import android.os.Bundle;
 import com.medsic.ttstowav.model.TTSManager;
 
 public class MainActivity extends AppCompatActivity {
-    TTSManager ttsManager;
+    private TTWApplication app;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ttsManager = new TTSManager(this);
+        app = TTWApplication.app();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        ttsManager.onStart();
+        app.getTtsManager().onStart();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ttsManager.onDestroy();
+        app.getTtsManager().onDestroy();
     }
 }
