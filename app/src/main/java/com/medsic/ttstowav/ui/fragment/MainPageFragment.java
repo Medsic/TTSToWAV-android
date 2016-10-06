@@ -1,7 +1,8 @@
 package com.medsic.ttstowav.ui.fragment;
 
-import android.app.Fragment;
+
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import com.medsic.ttstowav.ui.presenter.MainPagePresenter;
 import com.medsic.ttstowav.ui.view.MainPageView;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -36,39 +38,43 @@ public class MainPageFragment extends Fragment implements MainPageView {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         presenter = new MainPagePresenter(this);
-
-        pitchSeekbar.setProgress(1);
-        pitchSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                pitchValueText.setText(Integer.toString(progress));
-            }
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                presenter.saveNewPitchValue(pitchSeekbar.getProgress());
-            }
-        });
-
-        speechRateSeekbar.setProgress(1);
-        speechRateSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                speechRateValueText.setText(Integer.toString(progress));
-            }
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                presenter.saveNewSpeechrateValue(speechRateSeekbar.getProgress());
-            }
-        });
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main_page, container, false);
+        ButterKnife.bind(this, view);
+
+        pitchSeekbar.setProgress(100);
+        pitchSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                pitchValueText.setText(Float.toString((float) progress / 100));
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                int progress = pitchSeekbar.getProgress() == 0 ? 1 : pitchSeekbar.getProgress();
+                presenter.saveNewPitchValue(progress);
+            }
+        });
+
+        speechRateSeekbar.setProgress(100);
+        speechRateSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                speechRateValueText.setText(Float.toString((float) progress / 100));
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                int progress = speechRateSeekbar.getProgress() == 0 ? 1 : speechRateSeekbar.getProgress();
+                presenter.saveNewSpeechrateValue(progress);
+            }
+        });
+
         return view;
     }
 

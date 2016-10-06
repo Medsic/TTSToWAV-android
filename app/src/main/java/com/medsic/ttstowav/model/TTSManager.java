@@ -17,8 +17,16 @@ public class TTSManager implements BaseActivityLifeCycle {
         this.ctx = ctx;
     }
 
-    public  void speak(String text) {
+    public void speak(String text) {
         tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "text to speech");
+    }
+
+    public void setPitch(float level) {
+        tts.setPitch(level);
+    }
+
+    public void setSpeechRate(float rate) {
+        tts.setSpeechRate(rate);
     }
 
     @Override
